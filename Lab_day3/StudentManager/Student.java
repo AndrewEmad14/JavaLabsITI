@@ -75,8 +75,12 @@ public class Student {
             report.append("\n");
         }
 
+        report.append("h");
+
         // Convert to String and print
-        System.out.println(report.toString());
+        System.out.println(report);
+        report.append("hi");
+
     }
 
     class CourseRegistration {

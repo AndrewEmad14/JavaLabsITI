@@ -17,7 +17,7 @@ public class Complex<T> {
         this.imaginary = imaginary;
     }
 
-    public Boolean addComplex(Complex other) {
+    public Boolean addComplex(Complex<T> other) {
         if (other.real instanceof Integer && this.real instanceof Integer) {
             Integer result = (Integer) this.real + (Integer) other.real;
             Integer resultImag = (Integer) this.imaginary + (Integer) other.imaginary;
@@ -34,7 +34,7 @@ public class Complex<T> {
         return false;
     }
 
-    public Boolean subtractComplex(Complex other) {
+    public Boolean subtractComplex(Complex<T> other) {
         if (other.real instanceof Integer && this.real instanceof Integer) {
             Integer result = (Integer) this.real - (Integer) other.real;
             Integer resultImag = (Integer) this.imaginary - (Integer) other.imaginary;
@@ -53,7 +53,7 @@ public class Complex<T> {
         return false;
     }
 
-    public Boolean multiplyComplex(Complex other) {
+    public Boolean multiplyComplex(Complex<T> other) {
         if (other.real instanceof Integer && this.real instanceof Integer) {
             Integer result = (Integer) this.real * (Integer) other.real;
             Integer resultImag = (Integer) this.imaginary * (Integer) other.imaginary;
@@ -72,7 +72,7 @@ public class Complex<T> {
         return false;
     }
 
-    public Boolean divideComplex(Complex other) {
+    public Boolean divideComplex(Complex<T> other) {
         if (other.real instanceof Integer && this.real instanceof Integer) {
             Integer denominator = (Integer) other.real * (Integer) other.real
                     + (Integer) other.imaginary * (Integer) other.imaginary;
@@ -105,5 +105,5 @@ public class Complex<T> {
     public String toString() {
         return real + " + " + imaginary + "i";
     }
-
+    // compex@hexadecimal edgrydf34546
 }

@@ -28,6 +28,7 @@ public class Main {
             while (true) {
                 try {
 
+                    // .trim() ""
                     int choice = scan.nextInt();
                     if (choice == 1) {
                         System.out.println("Enter Student Name:");
