@@ -1,4 +1,4 @@
-package WorldStream;
+package WolrdCity;
 
 public class City {
 	private int id;
