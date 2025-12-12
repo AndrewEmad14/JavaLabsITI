@@ -2,8 +2,10 @@ package Lab_day6.LibraryProject.Client.Controller;
 
 import Lab_day6.LibraryProject.Client.Model.Client;
 import Lab_day6.LibraryProject.Library.Model.LibraryItem;
+import Lab_day6.LibraryProject.Utilities.ClientNotFoundException;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class ClientController {
 
@@ -20,54 +22,50 @@ public class ClientController {
     }
 
     // retrieveByID
-    public Client getClientByID(int clientID) {
-        for (Client client : clientList) {
-            if (client.getClientID() == clientID) {
-                return client;
-            }
-        }
-        return null;
+    public Client getClientByID(int clientID) throws ClientNotFoundException {
+        return clientList.stream()
+                .filter(client -> client.getClientID() == clientID)
+                .findFirst()
+                .orElseThrow(() -> new ClientNotFoundException());
+
     }
 
     // display
     public void displayClients() {
         System.out.println("Clients:");
-        for (Client client : clientList) {
-            System.out.println(client);
-        }
+        clientList.forEach((client) -> System.out.println(client));
     }
 
     // remove
-    public void removeClient(int clientID) {
-        clientList.removeIf(client -> client.getClientID() == clientID);
+    public Boolean removeClient(int clientID) {
+        return clientList.removeIf(client -> client.getClientID() == clientID);
     }
 
     // update
-    public void updateClient(int clientID, Client newClient) {
-        for (int i = 0; i < clientList.size(); i++) {
-            if (clientList.get(i).getClientID() == clientID) {
-                clientList.set(i, newClient);
-                return;
-            }
-        }
+    public void updateClient(int clientID, Client newClient) throws ClientNotFoundException {
+        int index = IntStream.range(0, clientList.size())
+                .filter(i -> clientList.get(i).getClientID() == clientID)
+                .findFirst()
+                .orElseThrow(() -> new ClientNotFoundException());
+        clientList.set(index, newClient);
     }
 
     // borrow item
-    public boolean borrowItem(int clientID, LibraryItem item) {
-        Client client = getClientByID(clientID);
-        if (client != null) {
-            return client.addBorrowedItem(item);
+    public void borrowItem(int clientID, LibraryItem item) {
+        try {
+            getClientByID(clientID).addBorrowedItem(item);
+        } catch (ClientNotFoundException e) {
+            e.printStackTrace();
         }
-        return false;
     }
 
     // return item
-    public boolean returnItem(int clientID, LibraryItem item) {
-        Client client = getClientByID(clientID);
-        if (client != null) {
-            return client.returnBorrowedItem(item);
+    public void returnItem(int clientID, LibraryItem item) {
+        try {
+            getClientByID(clientID).returnBorrowedItem(item);
+        } catch (ClientNotFoundException e) {
+            e.printStackTrace();
         }
-        return false;
     }
 
 }
