@@ -9,14 +9,11 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import Lab_day6.LibraryProject.Client.Model.Client;
-
 public class ClientView {
-    private static ClientView instance;
     private ClientController clientController = new ClientController();
-    private LibraryController libraryController = new LibraryController();
+    private LibraryController<LibraryItem> libraryController = new LibraryController<>();
 
-    public ClientView(ClientController clientController, LibraryController libraryController) {
+    public ClientView(ClientController clientController, LibraryController<LibraryItem> libraryController) {
         this.clientController = clientController;
         this.libraryController = libraryController;
 

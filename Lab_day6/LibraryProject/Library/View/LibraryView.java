@@ -5,15 +5,16 @@ import java.util.Scanner;
 
 import Lab_day6.LibraryProject.Library.Controller.LibraryController;
 import Lab_day6.LibraryProject.Library.Model.Book;
+import Lab_day6.LibraryProject.Library.Model.LibraryItem;
 import Lab_day6.LibraryProject.Library.Model.Magazine;
 import Lab_day6.LibraryProject.Utilities.Flusher;
 import Lab_day6.LibraryProject.Utilities.ItemNotFoundException;
 import Lab_day6.LibraryProject.Utilities.Validator;
 
 public class LibraryView {
-    private LibraryController libraryController;
+    private LibraryController<LibraryItem> libraryController;
 
-    public LibraryView(LibraryController libraryController) {
+    public LibraryView(LibraryController<LibraryItem> libraryController) {
         this.libraryController = libraryController;
     }
 

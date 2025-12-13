@@ -1,14 +1,11 @@
 package Lab_day6.LibraryProject;
 
-import java.nio.channels.ClosedByInterruptException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import javax.swing.text.html.HTMLDocument.BlockElement;
-
-import Lab_day6.LibraryProject.Client.Model.Client;
 import Lab_day6.LibraryProject.Client.View.ClientView;
 import Lab_day6.LibraryProject.Library.Controller.LibraryController;
+import Lab_day6.LibraryProject.Library.Model.LibraryItem;
 import Lab_day6.LibraryProject.Library.View.LibraryView;
 import Lab_day6.LibraryProject.Utilities.Flusher;
 import Lab_day6.LibraryProject.Client.Controller.ClientController;
@@ -17,7 +14,7 @@ public class Main {
     public static void runLibaryManagement() {
         Flusher.flush();
         ClientController clientController = new ClientController();
-        LibraryController libraryController = new LibraryController();
+        LibraryController<LibraryItem> libraryController = new LibraryController<LibraryItem>();
         LibraryView libraryView = new LibraryView(libraryController);
         ClientView clientView = new ClientView(clientController, libraryController);
 

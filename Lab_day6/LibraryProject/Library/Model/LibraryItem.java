@@ -1,7 +1,5 @@
 package Lab_day6.LibraryProject.Library.Model;
 
-import java.time.LocalDate;
-
 public abstract class LibraryItem {
     protected int id;
     protected String title; // Title of the item
