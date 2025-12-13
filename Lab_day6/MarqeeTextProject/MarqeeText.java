@@ -7,9 +7,10 @@ public class MarqeeText extends JFrame {
     private JLabel label;
     private int xPosition = 0;
     private String marqueeString = "Java World ";
+    private int height = 300;
+    private int width = 600;
 
     public MarqeeText() {
-        int height = 300, width = 600;
 
         // Set up the frame
         setTitle("Marquee Text");
