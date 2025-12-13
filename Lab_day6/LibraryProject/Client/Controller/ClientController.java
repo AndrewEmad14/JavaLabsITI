@@ -22,7 +22,7 @@ public class ClientController {
     }
 
     // retrieveByID
-    public Client getClientByID(int clientID) throws ClientNotFoundException {
+    public Client findClientById(int clientID) throws ClientNotFoundException {
         return clientList.stream()
                 .filter(client -> client.getClientID() == clientID)
                 .findFirst()
@@ -33,27 +33,52 @@ public class ClientController {
     // display
     public void displayClients() {
         System.out.println("Clients:");
+        if (clientList.isEmpty()) {
+            System.out.println("No clients found.");
+            return;
+        }
         clientList.forEach((client) -> System.out.println(client));
     }
 
+    public void displayClient(int clientID) throws ClientNotFoundException {
+        Client myClient = clientList.stream()
+                .filter(client -> client.getClientID() == clientID)
+                .findFirst()
+                .orElseThrow(() -> new ClientNotFoundException());
+        System.out.println(myClient);
+    }
+
     // remove
-    public Boolean removeClient(int clientID) {
-        return clientList.removeIf(client -> client.getClientID() == clientID);
+    public void removeClient(int clientID) throws ClientNotFoundException {
+        if (!clientList.removeIf(client -> client.getClientID() == clientID)) {
+            throw new ClientNotFoundException();
+        }
     }
 
     // update
-    public void updateClient(int clientID, Client newClient) throws ClientNotFoundException {
+    public void updateClient(int clientID, String name, String email, ArrayList<LibraryItem> borrowedItems)
+            throws ClientNotFoundException {
         int index = IntStream.range(0, clientList.size())
                 .filter(i -> clientList.get(i).getClientID() == clientID)
                 .findFirst()
                 .orElseThrow(() -> new ClientNotFoundException());
-        clientList.set(index, newClient);
+        clientList.get(index).setName(name);
+        clientList.get(index).setEmail(email);
+        clientList.get(index).setBorrowedItems(borrowedItems);
     }
 
     // borrow item
     public void borrowItem(int clientID, LibraryItem item) {
         try {
-            getClientByID(clientID).addBorrowedItem(item);
+            findClientById(clientID).addBorrowedItem(item);
+        } catch (ClientNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayBorrowedItems(int clientID) {
+        try {
+            findClientById(clientID).displayBorrowedItems();
         } catch (ClientNotFoundException e) {
             e.printStackTrace();
         }
@@ -62,7 +87,7 @@ public class ClientController {
     // return item
     public void returnItem(int clientID, LibraryItem item) {
         try {
-            getClientByID(clientID).returnBorrowedItem(item);
+            findClientById(clientID).returnBorrowedItem(item);
         } catch (ClientNotFoundException e) {
             e.printStackTrace();
         }

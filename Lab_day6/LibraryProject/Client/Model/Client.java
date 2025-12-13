@@ -46,7 +46,19 @@ public class Client {
 
     }
 
+    public void displayBorrowedItems() {
+        if (borrowedItems.isEmpty()) {
+            System.out.println("No borrowed items.");
+            return;
+        }
+        System.out.println("Borrowed Items:");
+        borrowedItems.forEach((item) -> System.out.println(item));
+    }
+
     public Boolean returnBorrowedItem(LibraryItem item) {
+        if (item == null) {
+            return false;
+        }
         if (borrowedItems.remove(item)) {
             item.setStockQuantity(item.getStockQuantity() + 1);
             return true;
@@ -72,6 +84,16 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client ID: " + clientID + ", Name: " + name + ", Email: " + email;
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID:")
+                .append(clientID)
+                .append(" Name: ")
+                .append(name)
+                .append(" Email: ")
+                .append(email)
+                .append(" Borrowed Items Count: ")
+                .append(borrowedItems.size());
+        borrowedItems.forEach(item -> sb.append("\n  - ").append(item.toString()));
+        return sb.toString();
     }
 }

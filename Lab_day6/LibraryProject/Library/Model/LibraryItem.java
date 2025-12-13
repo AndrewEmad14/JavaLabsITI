@@ -6,19 +6,16 @@ public abstract class LibraryItem {
     protected int id;
     protected String title; // Title of the item
     protected String author; // Author/Creator/Director
-    protected int yearPublished; // Year of publication/release
-    protected int borrowedByClientID = -1; // ID of the client who borrowed the item, -1 if not borrowed
+    protected String yearPublished; // Year of publication/release
     protected static int idCounter = 0;
     protected int stockQuantity = 1; // Number of copies available in the library
 
-    public LibraryItem(String title, String author, int yearPublished, int borrowedByClientID,
-            int stockQuantity) {
+    public LibraryItem(String title, String author, String yearPublished, int stockQuantity) {
         this.id = idCounter;
         idCounter++;
         this.title = title;
         this.author = author;
         this.yearPublished = yearPublished;
-        this.borrowedByClientID = borrowedByClientID;
         this.stockQuantity = stockQuantity;
     }
 
@@ -34,24 +31,16 @@ public abstract class LibraryItem {
         this.title = title;
     }
 
-    public void setYearPublished(int yearPublished) {
+    public void setYearPublished(String yearPublished) {
         this.yearPublished = yearPublished;
-    }
-
-    public void setBorrowedByClientID(int borrowedByClientID) {
-        this.borrowedByClientID = borrowedByClientID;
     }
 
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
     }
 
-    public int getYearPublished() {
+    public String getYearPublished() {
         return yearPublished;
-    }
-
-    public int getBorrowedByClientID() {
-        return borrowedByClientID;
     }
 
     public int getStockQuantity() {

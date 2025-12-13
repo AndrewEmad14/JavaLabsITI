@@ -1,27 +1,60 @@
-package Lab_day6.LibraryProject.View;
+package Lab_day6.LibraryProject;
 
-import Lab_day6.LibraryProject.Controller.Library;
-import Lab_day6.LibraryProject.Model.*;
-import Lab_day6.LibraryProject.Utilities.ItemNotFoundException;
+import java.nio.channels.ClosedByInterruptException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+import javax.swing.text.html.HTMLDocument.BlockElement;
+
+import Lab_day6.LibraryProject.Client.Model.Client;
+import Lab_day6.LibraryProject.Client.View.ClientView;
+import Lab_day6.LibraryProject.Library.Controller.LibraryController;
+import Lab_day6.LibraryProject.Library.View.LibraryView;
+import Lab_day6.LibraryProject.Utilities.Flusher;
+import Lab_day6.LibraryProject.Client.Controller.ClientController;
 
 public class Main {
-    public static void main(String args[]) {
+    public static void runLibaryManagement() {
+        Flusher.flush();
+        ClientController clientController = new ClientController();
+        LibraryController libraryController = new LibraryController();
+        LibraryView libraryView = new LibraryView(libraryController);
+        ClientView clientView = new ClientView(clientController, libraryController);
 
-        System.out.println("Library Management System");
-        Library library = new Library();
-        LibraryItem book1 = new Book("The Great Gatsby", "F. Scott Fitzgerald", 1925, true);
-        LibraryItem book2 = new Book("To Kill a Mockingbird", "Harper Lee", 1960, true);
-        LibraryItem magazine1 = new Magazine("National Geographic", "Various", 2021, true);
+        Boolean isRunning = true;
+        Scanner scanner = new Scanner(System.in);
+        while (isRunning) {
+            Flusher.flush();
+            try {
+                System.out.println("Select Mode: 1. Client Management 2. Library Management 3. Exit");
+                int modeChoice = scanner.nextInt();
+                switch (modeChoice) {
+                    case 1:
+                        clientView.mainClientView();
+                        break;
+                    case 2:
+                        libraryView.mainLibraryView();
+                        break;
+                    case 3:
+                        isRunning = false;
+                        System.out.println("Exiting the system. Goodbye!");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next();
 
-        library.addItem(book1);
-        library.addItem(book2);
-        library.addItem(magazine1);
-        try {
-            LibraryItem item = library.getItem(5);
-        } catch (ItemNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            }
+
         }
-        library.display();
+        scanner.close();
+
+    }
+
+    public static void main(String args[]) {
+        runLibaryManagement();
+
     }
 }

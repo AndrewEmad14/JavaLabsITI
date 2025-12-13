@@ -1,6 +1,7 @@
 package Lab_day6.LibraryProject.Library.Controller;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import Lab_day6.LibraryProject.Library.Model.LibraryItem;
 import Lab_day6.LibraryProject.Utilities.ItemNotFoundException;
@@ -15,48 +16,78 @@ public class LibraryController<T extends LibraryItem> {
 
     // retrieve
     public T getItem(int id) throws ItemNotFoundException {
-
-        for (T item : libraryItemsList) {
-            if (item.getID() == id) {
-                return item;
-
-            }
-        }
-        throw new ItemNotFoundException();
+        return libraryItemsList.stream()
+                .filter(item -> item.getID() == id)
+                .findFirst()
+                .orElseThrow(() -> new ItemNotFoundException());
     }
 
     // display
-    public void display() {
-        System.out.println("Library Items:");
-        for (T item : libraryItemsList) {
-            System.out.println(item);
+    public void displayItemList() {
+        if (libraryItemsList.isEmpty()) {
+            System.out.println("No items found.");
+            return;
         }
+        libraryItemsList.forEach((item) -> System.out.println(item));
+    }
+
+    public void displayAvailableItems() {
+        if (libraryItemsList.isEmpty()) {
+            System.out.println("No items found.");
+            return;
+        }
+        Boolean hasAvailableItems = libraryItemsList.stream()
+                .anyMatch(item -> item.getStockQuantity() > 0);
+        if (!hasAvailableItems) {
+            System.out.println("No available items found.");
+            return;
+        }
+        System.out.println("Available Library Items:");
+
+        libraryItemsList.forEach((item) -> {
+            if (item.getStockQuantity() > 0) {
+                System.out.println(item);
+            }
+        });
+    }
+
+    public void displayitem(int id) throws ItemNotFoundException {
+        LibraryItem myItem = libraryItemsList.stream()
+                .filter(item -> item.getID() == id)
+                .findFirst()
+                .orElseThrow(() -> new ItemNotFoundException());
+        System.out.println(myItem);
     }
 
     // find
-    public boolean findItem(int id) {
-        for (T item : libraryItemsList) {
-            if (item.getID() == id) {
-                return true;
-            }
+    public T findItemById(int id) throws ItemNotFoundException {
+        if (libraryItemsList.isEmpty() || id < 0) {
+            throw new ItemNotFoundException();
         }
-        return false;
+        return libraryItemsList.stream()
+                .filter((item) -> item.getID() == id)
+                .findFirst()
+                .orElseThrow(() -> new ItemNotFoundException());
     }
 
     // remove
-    public void removeItem(int id) {
-        libraryItemsList.removeIf(item -> item.getID() == id);
+    public void removeItem(int id) throws ItemNotFoundException {
+        if (!libraryItemsList.removeIf(item -> item.getID() == id)) {
+            throw new ItemNotFoundException();
+        }
     }
 
     // update
-    public void updateItem(int id, T newItem) throws ItemNotFoundException {
-        for (int i = 0; i < libraryItemsList.size(); i++) {
-            if (libraryItemsList.get(i).getID() == id) {
-                libraryItemsList.set(i, newItem);
-                return;
-            }
-        }
-        throw new ItemNotFoundException();
+    public void updateItem(int id, String title, String author, String year, int stock) throws ItemNotFoundException {
+        int index = IntStream.range(0, libraryItemsList.size())
+                .filter(i -> libraryItemsList.get(i).getID() == id)
+                .findFirst()
+                .orElseThrow(() -> new ItemNotFoundException());
+
+        libraryItemsList.get(index).setTitle(title);
+        libraryItemsList.get(index).setAuthor(author);
+        libraryItemsList.get(index).setYearPublished(year);
+        libraryItemsList.get(index).setStockQuantity(stock);
     }
 
     public ArrayList<T> getLibraryItemsList() {
